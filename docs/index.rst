@@ -1,0 +1,5 @@
+==================
+collective.bigbang
+==================
+
+User documentation
