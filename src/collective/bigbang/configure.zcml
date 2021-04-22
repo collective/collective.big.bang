@@ -5,41 +5,14 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.bigbang">
 
-  <i18n:registerTranslations directory="locales" />
-
-  <!--
-    Be careful if you use general includeDependencies, it can have side effects!
-    Better import explicit packages or configurations ;)
-  -->
-  <!--<includeDependencies package="." />-->
-
-  <include package=".browser" />
-
-  <include file="permissions.zcml" />
-
-  <genericsetup:registerProfile
-      name="default"
-      title="collective.bigbang"
-      directory="profiles/default"
-      description="Installs the collective.bigbang add-on."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      post_handler=".setuphandlers.post_install"
-      />
-
-  <genericsetup:registerProfile
-      name="uninstall"
-      title="collective.bigbang (uninstall)"
-      directory="profiles/uninstall"
-      description="Uninstalls the collective.bigbang add-on."
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      post_handler=".setuphandlers.uninstall"
-      />
 
   <utility
       factory=".setuphandlers.HiddenProfiles"
       name="collective.bigbang-hiddenprofiles"
       />
 
-  <!-- -*- extra stuff goes here -*- -->
+  <subscriber for="zope.processlifetime.IProcessStarting"
+      handler=".big.bang"/>
+
 
 </configure>

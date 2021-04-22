@@ -2,13 +2,6 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://travis-ci.org/collective/collective.bigbang.svg?branch=master
-    :target: https://travis-ci.org/collective/collective.bigbang
-
-.. image:: https://coveralls.io/repos/github/collective/collective.bigbang/badge.svg?branch=master
-    :target: https://coveralls.io/github/collective/collective.bigbang?branch=master
-    :alt: Coveralls
-
 .. image:: https://img.shields.io/pypi/v/collective.bigbang.svg
     :target: https://pypi.python.org/pypi/collective.bigbang/
     :alt: Latest Version
@@ -28,33 +21,65 @@
 collective.bigbang
 ==================
 
-Tell me what your product does
+
+    Our whole universe was in a hot, dense state
+    Then nearly fourteen billion years ago expansion started, wait
+    The earth began to cool, the autotrophs began to drool
+    Neanderthals developed tools
+    We built a wall (we built the pyramids)
+    Math, science, history, unraveling the mysteries
+    That all started with the big bang! Hey!
+
+So all started with the Plone site! Hey!
+This package it used to create Plone site when Zope is started (just before "Ready to handle requests" sentence).
+
+You can use environment variables to create Plone site and choose package you would like to install. See :ref:`Environment variables`
+
+
+Why not use collective.recipe.plonesite?
+The goal is to create Plone site when you deploy a new Plone on a contenerized env.
+We think it's easy to create Plone site when you start it without entrypoint or without using and other command.
+It's more simple in a contenerized environment that starting a buildout part to create a Pone site.
+
+
+.. _Environment variables:
+Environment variables
+---------------------
+You can add environment variable into your buildout in instance part with "environment-vars"
+
+    ...
+    [instance]
+    ...
+    environment-vars =
+        PLONE_EXTENSION_IDS plone.app.caching:default,plonetheme.barceloneta:default
+        DEFAULT_LANGUAGE fr
+        ADMIN_PASSWORD mysuperpa$$w0rd
+    ...
+
+Or you can also use tools like `direnv <https://direnv.net/>`_ (.envrc file example)
+
+    export PLONE_EXTENSION_IDS=plone.app.caching:default,plonetheme.barceloneta:default
+    export DEFAULT_LANGUAGE=fr
+    export ADMIN_PASSWORD=mysuperpa$$w0rd
+
+
+PLONE_EXTENSION_IDS
+    A list of GenericSetup profiles to install.
+    Default values are ``plone.app.caching:default,plonetheme.barceloneta:default``
+
+DEFAULT_LANGUAGE
+    The default language of the Plone site.
+    Default value is ``en``
+
+ADMIN_PASSWORD
+    The password for the zope "admin" user.
+    Default value is ``admin``
+
 
 Features
 --------
 
-- Can be bullet points
-
-
-Examples
---------
-
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
-
-
-Documentation
--------------
-
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
-
-
-Translations
-------------
-
-This product has been translated into
-
-- Klingon (thanks, K'Plai)
+- Create Plone site when Zope is started
 
 
 Installation
@@ -78,14 +103,13 @@ Contribute
 
 - Issue Tracker: https://github.com/collective/collective.bigbang/issues
 - Source Code: https://github.com/collective/collective.bigbang
-- Documentation: https://docs.plone.org/foo/bar
 
 
 Support
 -------
 
 If you are having issues, please let us know.
-We have a mailing list located at: project@example.com
+We have a mailing list located at: devs@imio.be
 
 
 License
