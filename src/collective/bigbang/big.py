@@ -42,7 +42,7 @@ def bang(event):
         extension_ids = tuple(
             os.getenv(
                 "PLONE_EXTENSION_IDS",
-                "'plone.app.caching:default','plonetheme.barceloneta:default'",
+                "plone.app.caching:default,plonetheme.barceloneta:default",
             ).split(",")
         )
 
