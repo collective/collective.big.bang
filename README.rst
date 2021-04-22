@@ -20,7 +20,7 @@
 ==================
 collective.bigbang
 ==================
-
+::
 
     Our whole universe was in a hot, dense state
     Then nearly fourteen billion years ago expansion started, wait
@@ -43,9 +43,10 @@ It's more simple in a contenerized environment that starting a buildout part to 
 
 
 .. _Environment variables:
+
 Environment variables
 ---------------------
-You can add environment variable into your buildout in instance part with "environment-vars"
+You can add environment variable into your buildout in instance part with "environment-vars"::
 
     ...
     [instance]
@@ -56,7 +57,7 @@ You can add environment variable into your buildout in instance part with "envir
         ADMIN_PASSWORD mysuperpa$$w0rd
     ...
 
-Or you can also use tools like `direnv <https://direnv.net/>`_ (.envrc file example)
+Or you can also use tools like `direnv <https://direnv.net/>`_ (.envrc file example)::
 
     export PLONE_EXTENSION_IDS=plone.app.caching:default,plonetheme.barceloneta:default
     export DEFAULT_LANGUAGE=fr
