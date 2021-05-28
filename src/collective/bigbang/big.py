@@ -24,10 +24,11 @@ def bang(event):
     container = app.unrestrictedTraverse("/")
 
     site_id = os.getenv("SITE_ID", "Plone")
+    is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
 
     oids = container.objectIds()
 
-    if site_id not in oids:
+    if site_id not in oids and is_bigbang_active:
         acl_users = app.acl_users
         user = acl_users.getUser("admin")
         if user:
@@ -69,7 +70,7 @@ def bang(event):
         )
 
     admin_password = os.getenv("ADMIN_PASSWORD", "admin")
-    if admin_password:
+    if admin_password and is_bigbang_active:
         # update zope admin password
         users = container.acl_users.users
         users.updateUserPassword("admin", admin_password)

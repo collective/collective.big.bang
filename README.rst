@@ -55,6 +55,7 @@ You can add environment variable into your buildout in instance part with "envir
         PLONE_EXTENSION_IDS plone.app.caching:default,plonetheme.barceloneta:default
         DEFAULT_LANGUAGE fr
         ADMIN_PASSWORD mysuperpa$$w0rd
+        ACTIVE_BIGBANG True
     ...
 
 Or you can also use tools like `direnv <https://direnv.net/>`_ (.envrc file example)::
@@ -62,6 +63,7 @@ Or you can also use tools like `direnv <https://direnv.net/>`_ (.envrc file exam
     export PLONE_EXTENSION_IDS=plone.app.caching:default,plonetheme.barceloneta:default
     export DEFAULT_LANGUAGE=fr
     export ADMIN_PASSWORD=mysuperpa$$w0rd
+    export ACTIVE_BIGBANG=True
 
 
 PLONE_EXTENSION_IDS
@@ -75,6 +77,10 @@ DEFAULT_LANGUAGE
 ADMIN_PASSWORD
     The password for the zope "admin" user.
     Default value is ``admin``
+
+ACTIVE_BIGBANG
+    Create a Plone site on this instance. This variable is used to avoid conflict error, this variable should be set to True to only one instance
+    Default value is ``False``
 
 
 Features
@@ -92,8 +98,19 @@ Install collective.bigbang by adding it to your buildout::
 
     ...
 
-    eggs =
+    eggs +=
         collective.bigbang
+
+    ...
+
+    [instance]
+    ...
+    environment-vars =
+        PLONE_EXTENSION_IDS plone.app.caching:default,plonetheme.barceloneta:default
+        DEFAULT_LANGUAGE fr
+        ADMIN_PASSWORD mysuperpa$$w0rd
+        ACTIVE_BIGBANG True
+
 
 
 and then running ``bin/buildout``
