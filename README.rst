@@ -31,9 +31,9 @@ collective.bigbang
     That all started with the big bang! Hey!
 
 So all started with the Plone site! Hey!
-This package it used to create Plone site when Zope is started (just before "Ready to handle requests" sentence).
+This package it used to create Plone site when Zope is started (just before `Ready to handle requests` sentence).
 
-You can use environment variables to create Plone site and choose package you would like to install. See :ref:`Environment variables`
+You can use environment variables to create Plone site and choose package you would like to install. See "Environment variables"
 
 
 Why not use collective.recipe.plonesite?
