@@ -42,6 +42,12 @@ We think it's easy to create Plone site when you start it without entrypoint or 
 It's more simple in a contenerized environment that starting a buildout part to create a Pone site.
 
 
+
+Fun fact:
+
+This package is now called collective.big.bang because the name collective.bigbang was rejected by pypi naming package.
+
+
 .. _Environment variables:
 
 Environment variables
