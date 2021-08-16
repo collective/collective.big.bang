@@ -21,11 +21,12 @@ class CollectiveBigbangLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.restapi
+
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=collective.big.bang)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.big.bang:default')
+        applyProfile(portal, "collective.big.bang:default")
 
 
 COLLECTIVE_BIG_BANG_FIXTURE = CollectiveBigbangLayer()
@@ -33,13 +34,13 @@ COLLECTIVE_BIG_BANG_FIXTURE = CollectiveBigbangLayer()
 
 COLLECTIVE_BIG_BANG_INTEGRATION_TESTING = IntegrationTesting(
     bases=(COLLECTIVE_BIG_BANG_FIXTURE,),
-    name='CollectiveBigbangLayer:IntegrationTesting',
+    name="CollectiveBigbangLayer:IntegrationTesting",
 )
 
 
 COLLECTIVE_BIG_BANG_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(COLLECTIVE_BIG_BANG_FIXTURE,),
-    name='CollectiveBigbangLayer:FunctionalTesting',
+    name="CollectiveBigbangLayer:FunctionalTesting",
 )
 
 
@@ -49,5 +50,5 @@ COLLECTIVE_BIG_BANG_ACCEPTANCE_TESTING = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveBigbangLayer:AcceptanceTesting',
+    name="CollectiveBigbangLayer:AcceptanceTesting",
 )
