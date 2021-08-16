@@ -4,13 +4,13 @@
 #
 # Run this robot test stand-alone:
 #
-#  $ bin/test -s collective.bigbang -t test_example.robot --all
+#  $ bin/test -s collective.big.bang -t test_example.robot --all
 #
 # Run this robot test with robot server (which is faster):
 #
 # 1) Start robot server:
 #
-# $ bin/robot-server --reload-path src collective.bigbang.testing.COLLECTIVE_BIGBANG_ACCEPTANCE_TESTING
+# $ bin/robot-server --reload-path src collective.big.bang.testing.COLLECTIVE_BIG_BANG_ACCEPTANCE_TESTING
 #
 # 2) Run robot tests:
 #

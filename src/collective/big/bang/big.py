@@ -13,7 +13,7 @@ import os
 import transaction
 import Zope2
 
-logger = logging.getLogger("collective.bigbang")
+logger = logging.getLogger("collective.big.bang")
 
 
 def bang(event):

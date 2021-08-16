@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'collective.bigbang'
+project = u'collective.big.bang'
 copyright = u'Benoît Suttor (bsuttor)'
 author = u'Benoît Suttor (bsuttor)'
 
@@ -199,7 +199,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'collective.bigbangdoc'
+htmlhelp_basename = 'collective.big.bangdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 

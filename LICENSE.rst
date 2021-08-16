@@ -1,4 +1,4 @@
-collective.bigbang Copyright 2021, Benoît Suttor
+collective.big.bang Copyright 2021, Benoît Suttor
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 2

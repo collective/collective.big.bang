@@ -8,5 +8,5 @@ class HiddenProfiles(object):
     def getNonInstallableProfiles(self):
         """Hide uninstall profile from site-creation and quickinstaller."""
         return [
-            "collective.bigbang:uninstall",
+            "collective.big.bang:uninstall",
         ]

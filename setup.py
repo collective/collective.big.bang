@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Installer for the collective.bigbang package."""
+"""Installer for the collective.big.bang package."""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -34,16 +34,16 @@ setup(
     keywords="Python Plone CMS",
     author="Benoît Suttor",
     author_email="benoit.suttor@imio.be",
-    url="https://github.com/collective/collective.bigbang",
+    url="https://github.com/collective/collective.big.bang",
     project_urls={
-        "PyPI": "https://pypi.python.org/pypi/collective.bigbang",
-        "Source": "https://github.com/collective/collective.bigbang",
-        "Tracker": "https://github.com/collective/collective.bigbang/issues",
-        # 'Documentation': 'https://collective.bigbang.readthedocs.io/en/latest/',
+        "PyPI": "https://pypi.python.org/pypi/collective.big.bang",
+        "Source": "https://github.com/collective/collective.big.bang",
+        "Tracker": "https://github.com/collective/collective.big.bang/issues",
+        # 'Documentation': 'https://collective.big.bang.readthedocs.io/en/latest/',
     },
     license="GPL version 2",
     packages=find_packages("src", exclude=["ez_setup"]),
-    namespace_packages=["collective"],
+    namespace_packages=["collective", "collective.big"],
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,

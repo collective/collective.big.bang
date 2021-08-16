@@ -2,24 +2,24 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://img.shields.io/pypi/v/collective.bigbang.svg
-    :target: https://pypi.python.org/pypi/collective.bigbang/
+.. image:: https://img.shields.io/pypi/v/collective.big.bang.svg
+    :target: https://pypi.python.org/pypi/collective.big.bang/
     :alt: Latest Version
 
-.. image:: https://img.shields.io/pypi/status/collective.bigbang.svg
-    :target: https://pypi.python.org/pypi/collective.bigbang
+.. image:: https://img.shields.io/pypi/status/collective.big.bang.svg
+    :target: https://pypi.python.org/pypi/collective.big.bang
     :alt: Egg Status
 
-.. image:: https://img.shields.io/pypi/pyversions/collective.bigbang.svg?style=plastic   :alt: Supported - Python Versions
+.. image:: https://img.shields.io/pypi/pyversions/collective.big.bang.svg?style=plastic   :alt: Supported - Python Versions
 
-.. image:: https://img.shields.io/pypi/l/collective.bigbang.svg
-    :target: https://pypi.python.org/pypi/collective.bigbang/
+.. image:: https://img.shields.io/pypi/l/collective.big.bang.svg
+    :target: https://pypi.python.org/pypi/collective.big.bang/
     :alt: License
 
 
-==================
-collective.bigbang
-==================
+===================
+collective.big.bang
+===================
 ::
 
     Our whole universe was in a hot, dense state
@@ -45,7 +45,7 @@ It's more simple in a contenerized environment that starting a buildout part to 
 
 Fun fact:
 
-This package is now called collective.big.bang because the name collective.bigbang was rejected by pypi naming package.
+This package is now called collective.big.bang instead of the original collective.bigbang, because it was rejected by pypi naming package.
 
 
 .. _Environment variables:
@@ -98,14 +98,14 @@ Features
 Installation
 ------------
 
-Install collective.bigbang by adding it to your buildout::
+Install collective.big.bang by adding it to your buildout::
 
     [buildout]
 
     ...
 
     eggs +=
-        collective.bigbang
+        collective.big.bang
 
     ...
 
@@ -125,8 +125,8 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/collective/collective.bigbang/issues
-- Source Code: https://github.com/collective/collective.bigbang
+- Issue Tracker: https://github.com/collective/collective.big.bang/issues
+- Source Code: https://github.com/collective/collective.big.bang
 
 
 Support

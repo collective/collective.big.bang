@@ -9,7 +9,7 @@ from plone.app.testing import (
 )
 from plone.testing import z2
 
-import collective.bigbang
+import collective.big.bang
 
 
 class CollectiveBigbangLayer(PloneSandboxLayer):
@@ -22,30 +22,30 @@ class CollectiveBigbangLayer(PloneSandboxLayer):
         # layer.
         import plone.restapi
         self.loadZCML(package=plone.restapi)
-        self.loadZCML(package=collective.bigbang)
+        self.loadZCML(package=collective.big.bang)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.bigbang:default')
+        applyProfile(portal, 'collective.big.bang:default')
 
 
-COLLECTIVE_BIGBANG_FIXTURE = CollectiveBigbangLayer()
+COLLECTIVE_BIG_BANG_FIXTURE = CollectiveBigbangLayer()
 
 
-COLLECTIVE_BIGBANG_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_BIGBANG_FIXTURE,),
+COLLECTIVE_BIG_BANG_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(COLLECTIVE_BIG_BANG_FIXTURE,),
     name='CollectiveBigbangLayer:IntegrationTesting',
 )
 
 
-COLLECTIVE_BIGBANG_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(COLLECTIVE_BIGBANG_FIXTURE,),
+COLLECTIVE_BIG_BANG_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(COLLECTIVE_BIG_BANG_FIXTURE,),
     name='CollectiveBigbangLayer:FunctionalTesting',
 )
 
 
-COLLECTIVE_BIGBANG_ACCEPTANCE_TESTING = FunctionalTesting(
+COLLECTIVE_BIG_BANG_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
-        COLLECTIVE_BIGBANG_FIXTURE,
+        COLLECTIVE_BIG_BANG_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),

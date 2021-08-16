@@ -5,7 +5,8 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix package after renaming from collective.bigbang to collective.big.bang
+  [laulaz]
 
 
 1.0a1 (2021-08-13)

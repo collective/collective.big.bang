@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from collective.bigbang.testing import (
-    COLLECTIVE_BIGBANG_ACCEPTANCE_TESTING  # noqa: E501,
+from collective.big.bang.testing import (
+    COLLECTIVE_BIG_BANG_ACCEPTANCE_TESTING  # noqa: E501,
 )
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
@@ -24,7 +24,7 @@ def test_suite():
         suite.addTests([
             layered(
                 robottestsuite,
-                layer=COLLECTIVE_BIGBANG_ACCEPTANCE_TESTING,
+                layer=COLLECTIVE_BIG_BANG_ACCEPTANCE_TESTING,
             ),
         ])
     return suite
