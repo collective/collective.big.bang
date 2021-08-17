@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0a2 (unreleased)
+1.0a2 (2021-08-17)
 ------------------
 
 - Fix package after renaming from collective.bigbang to collective.big.bang
