@@ -5,7 +5,8 @@ Changelog
 1.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Strip extension ids.
+  [odelaere]
 
 
 1.0a2 (2021-08-17)
