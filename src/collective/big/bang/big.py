@@ -41,10 +41,13 @@ def bang(event):
 
         # install Plone site
         extension_ids = tuple(
-            os.getenv(
-                "PLONE_EXTENSION_IDS",
-                "plone.app.caching:default,plonetheme.barceloneta:default",
-            ).split(",")
+            [
+                extension.strip()
+                for extension in os.getenv(
+                    "PLONE_EXTENSION_IDS",
+                    "plone.app.caching:default, plonetheme.barceloneta:default",
+                ).split(",")
+            ]
         )
 
         default_language = os.getenv("DEFAULT_LANGUAGE", "en")
