@@ -7,6 +7,8 @@ Changelog
 
 - Strip extension ids.
   [odelaere]
+- Do not attempt to do anything if ACTIVE_BIGBANG id not True.
+  [odelaere]
 
 
 1.0a2 (2021-08-17)
