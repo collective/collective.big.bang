@@ -5,7 +5,7 @@ def main(app):
     site = app.get('Plone')
 
     if site.language != 'en':
-        raise ValueError('Wrong site language')
+        raise ValueError('Wrong site language : ' + site.language)
     installed_products = [product['id']
                           for product in site.portal_quickinstaller.listInstalledProducts()
                           if product['status'] == 'installed']
