@@ -63,12 +63,12 @@ jobs:
         DEFAULT_LANGUAGE: fr
     - name: Update admin password
       run: |
-        bin/instance start
-        sleep 10
-        bin/instance stop
-        cat var/log/instance.log
-        rm var/log/instance.log
         bin/instance run test_scripts/admin_password_updated.py
       env:
         ADMIN_PASSWORD: test
-
+        ACTIVE_BIGBANG: "True"
+    - name: Admin password not updated if big bang not activated
+      run: |
+        bin/instance run test_scripts/admin_password_not_updated.py
+      env:
+        ADMIN_PASSWORD: test1234

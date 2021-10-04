@@ -7,7 +7,7 @@ def main(app):
     bang(None)
     new_password_hash = users._user_passwords.get('admin')
 
-    if password_hash == new_password_hash:
-        raise ValueError('Password was not updated')
+    if password_hash != new_password_hash:
+        raise ValueError('Password was updated')
 
 main(app)
