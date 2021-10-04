@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -47,7 +47,7 @@ jobs:
         rm var/log/instance.log
         bin/instance run test_scripts/created_default_site.py
       env:
-        ACTIVE_BIGBANG: True
+        ACTIVE_BIGBANG: "True"
     - name: Create custom site
       run: |
         bin/instance start
@@ -57,7 +57,7 @@ jobs:
         rm var/log/instance.log
         bin/instance run test_scripts/created_site_with_id_and_profiles.py
       env:
-        ACTIVE_BIGBANG: True
+        ACTIVE_BIGBANG: "True"
         SITE_ID: testingsite
         PLONE_EXTENSION_IDS: plonetheme.barceloneta:default
         DEFAULT_LANGUAGE: fr
