@@ -35,12 +35,16 @@ jobs:
         bin/instance start
         sleep 10
         bin/instance stop
+        cat var/log/instance.log
+        rm var/log/instance.log
         bin/instance run test_scripts/did_nothing_not_active.py
     - name: Active default
       run: |
         bin/instance start
         sleep 10
         bin/instance stop
+        cat var/log/instance.log
+        rm var/log/instance.log
         bin/instance run test_scripts/created_default_site.py
       env:
         ACTIVE_BIGBANG: True
@@ -49,6 +53,8 @@ jobs:
         bin/instance start
         sleep 10
         bin/instance stop
+        cat var/log/instance.log
+        rm var/log/instance.log
         bin/instance run test_scripts/created_site_with_id_and_profiles.py
       env:
         ACTIVE_BIGBANG: True
@@ -60,6 +66,8 @@ jobs:
         bin/instance start
         sleep 10
         bin/instance stop
+        cat var/log/instance.log
+        rm var/log/instance.log
         bin/instance run test_scripts/admin_password_updated.py
       env:
         ADMIN_PASSWORD: test
