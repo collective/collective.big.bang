@@ -1,0 +1,66 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Test package
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        pip install -U pip setuptools
+        pip install -r requirements.txt
+    - name: Cache eggs
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-eggs
+      with:
+        path: ./buildout-cache/eggs
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+    - name: buildout
+      run: |
+        buildout buildout:download-cache=./buildout-cache/downloads buildout:eggs-directory=./buildout-cache/eggs
+    - name: Not active
+      run: |
+        bin/instance start
+        sleep 10
+        bin/instance stop
+        bin/instance run test_scripts/did_nothing_not_active.py
+    - name: Active default
+      run: |
+        bin/instance start
+        sleep 10
+        bin/instance stop
+        bin/instance run test_scripts/created_default_site.py
+      env:
+        ACTIVE_BIGBANG: True
+    - name: Create custom site
+      run: |
+        bin/instance start
+        sleep 10
+        bin/instance stop
+        bin/instance run test_scripts/created_site_with_id_and_profiles.py
+      env:
+        ACTIVE_BIGBANG: True
+        SITE_ID: testingsite
+        PLONE_EXTENSION_IDS: plonetheme.barceloneta:default
+        DEFAULT_LANGUAGE: fr
+    - name: Update admin password
+      run: |
+        bin/instance start
+        sleep 10
+        bin/instance stop
+        bin/instance run test_scripts/admin_password_updated.py
+      env:
+        ADMIN_PASSWORD: test
+
