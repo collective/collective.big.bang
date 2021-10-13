@@ -6,9 +6,9 @@
     :target: https://pypi.python.org/pypi/collective.big.bang/
     :alt: Latest Version
 
-.. image:: https://img.shields.io/pypi/status/collective.big.bang.svg
-    :target: https://pypi.python.org/pypi/collective.big.bang
-    :alt: Egg Status
+.. image:: https://github.com/collective/collective.big.bang/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/collective/collective.big.bang/actions/workflows/test.yml
+    :alt: Tests Status
 
 .. image:: https://img.shields.io/pypi/pyversions/collective.big.bang.svg?style=plastic   :alt: Supported - Python Versions
 
@@ -45,7 +45,7 @@ It's more simple in a contenerized environment that starting a buildout part to 
 
 Fun fact:
 
-This package is now called collective.big.bang instead of the original collective.bigbang, because it was rejected by pypi naming package.
+This package is now called collective.big.bang instead of the original collective.bigbang, because collective.bigbang name was rejected by pypi naming package.
 
 
 .. _Environment variables:
