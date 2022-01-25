@@ -10,31 +10,43 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: 2.7
+            plone: 4.3
+          - python: 2.7
+            plone: 5.1
+          - python: 3.8
+            plone: 5.2
+          - python: 3.8
+            plone: "6.0"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ matrix.python }}
     - name: Install dependencies
       run: |
-        pip install -U pip setuptools
-        pip install -r requirements.txt
+        pip install -r requirements-${{matrix.plone}}.txt
     - name: Cache eggs
       uses: actions/cache@v2
       env:
         cache-name: cache-eggs
       with:
         path: ./buildout-cache/eggs
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.plone }}
     - name: buildout
       run: |
-        buildout buildout:download-cache=./buildout-cache/downloads buildout:eggs-directory=./buildout-cache/eggs
+        mkdir -p ./buildout-cache/downloads ./buildout-cache/eggs
+        buildout -c test_plone-${{matrix.plone}}.cfg buildout:download-cache=./buildout-cache/downloads buildout:eggs-directory=./buildout-cache/eggs
     - name: Not active
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
@@ -42,7 +54,7 @@ jobs:
     - name: Active default
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
@@ -52,7 +64,7 @@ jobs:
     - name: Create custom site
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
@@ -60,7 +72,7 @@ jobs:
       env:
         ACTIVE_BIGBANG: "True"
         SITE_ID: testingsite
-        PLONE_EXTENSION_IDS: plonetheme.barceloneta:default
+        PLONE_EXTENSION_IDS: plone.app.caching:default
         DEFAULT_LANGUAGE: fr
     - name: Update admin password
       run: |

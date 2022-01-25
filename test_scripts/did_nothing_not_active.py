@@ -1,4 +1,10 @@
+import os
+
+
 def main(app):
-    if not len(app.objectIds()) == 7:
+    site_id = os.getenv("SITE_ID", "Plone")
+    if site_id in app.objectIds():
         exit(1)
+
+
 main(app)

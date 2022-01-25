@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
+from plone.api import env
+from pkg_resources import parse_version
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Testing.makerequest import makerequest
@@ -16,9 +18,18 @@ import Zope2
 logger = logging.getLogger("collective.big.bang")
 
 
+def _default_packages_for_plone_version():
+    plone_version = int(str(env.plone_version()[0]))
+    if plone_version < 5:
+        theme = "plonetheme.classic:default, plonetheme.sunburst:default"
+    else:
+        theme = "plonetheme.barceloneta:default"
+    return "plone.app.caching:default, " + theme
+
+
 def bang(event):
     is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
-    if is_bigbang_active == 'True':
+    if is_bigbang_active == "True":
         app = Zope2.app()
         app = makerequest(app)
         app.REQUEST["PARENTS"] = [app]
@@ -44,8 +55,7 @@ def bang(event):
                 [
                     extension.strip()
                     for extension in os.getenv(
-                        "PLONE_EXTENSION_IDS",
-                        "plone.app.caching:default, plonetheme.barceloneta:default",
+                        "PLONE_EXTENSION_IDS", _default_packages_for_plone_version()
                     ).split(",")
                 ]
             )
@@ -69,7 +79,9 @@ def bang(event):
             logger.info("Plone Site created")
         else:
             logger.info(
-                "A Plone Site '{0}' already exists and will not be replaced".format(site_id)
+                "A Plone Site '{0}' already exists and will not be replaced".format(
+                    site_id
+                )
             )
 
         admin_password = os.getenv("ADMIN_PASSWORD", "admin")
