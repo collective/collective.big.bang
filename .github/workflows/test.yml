@@ -41,7 +41,7 @@ jobs:
         cache-name: cache-eggs
       with:
         path: ./buildout-cache/eggs
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.plone }}
     - name: buildout
       run: |
         buildout buildout:download-cache=./buildout-cache/downloads buildout:eggs-directory=./buildout-cache/eggs
