@@ -29,7 +29,7 @@ def _default_packages_for_plone_version():
 
 def bang(event):
     is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
-    if is_bigbang_active == 'True':
+    if is_bigbang_active == "True":
         app = Zope2.app()
         app = makerequest(app)
         app.REQUEST["PARENTS"] = [app]
@@ -55,8 +55,7 @@ def bang(event):
                 [
                     extension.strip()
                     for extension in os.getenv(
-                        "PLONE_EXTENSION_IDS",
-                        _default_packages_for_plone_version()
+                        "PLONE_EXTENSION_IDS", _default_packages_for_plone_version()
                     ).split(",")
                 ]
             )
@@ -80,7 +79,9 @@ def bang(event):
             logger.info("Plone Site created")
         else:
             logger.info(
-                "A Plone Site '{0}' already exists and will not be replaced".format(site_id)
+                "A Plone Site '{0}' already exists and will not be replaced".format(
+                    site_id
+                )
             )
 
         admin_password = os.getenv("ADMIN_PASSWORD", "admin")
