@@ -5,6 +5,7 @@ name: Test package
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   test:
