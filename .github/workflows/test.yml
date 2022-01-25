@@ -10,15 +10,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: 2.7
+            plone: 4.3
+          - python: 2.7
+            plone: 5.1
+          - python: 3.8
+            plone: 5.2
+          - python: 3.8
+            plone: "6.0"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ matrix.python }}
     - name: Install dependencies
       run: |
+        sed -ie "s#test-5.2#test-${{matrix.plone}}#" buildout.cfg
+        sed -ie "s#release/5.2-latest#release/${{matrix.plone}}-latest#" constraints.txt
         pip install -U pip setuptools
         pip install -r requirements.txt
     - name: Cache eggs

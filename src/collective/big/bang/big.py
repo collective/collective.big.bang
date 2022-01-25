@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
+from plone.api import env
+from pkg_resources import parse_version
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Testing.makerequest import makerequest
@@ -14,6 +16,15 @@ import transaction
 import Zope2
 
 logger = logging.getLogger("collective.big.bang")
+
+
+def _default_packages_for_plone_version():
+    plone_version = int(parse_version(env.plone_version())[0])
+    if plone_version < 5:
+        theme = "plonetheme.classic:default, plonetheme.sunburst:default"
+    else:
+        theme = "plonetheme.barceloneta:default"
+    return "plone.app.caching:default, " + theme
 
 
 def bang(event):
@@ -45,7 +56,7 @@ def bang(event):
                     extension.strip()
                     for extension in os.getenv(
                         "PLONE_EXTENSION_IDS",
-                        "plone.app.caching:default, plonetheme.barceloneta:default",
+                        _default_packages_for_plone_version()
                     ).split(",")
                 ]
             )
