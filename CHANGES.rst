@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0a4 (unreleased)
+1.0b1 (2022-01-25)
 ------------------
 
 - Added tests and better support for plone from 4.3 to 6.0.
