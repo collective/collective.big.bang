@@ -19,7 +19,7 @@ logger = logging.getLogger("collective.big.bang")
 
 
 def _default_packages_for_plone_version():
-    plone_version = int(parse_version(env.plone_version())[0])
+    plone_version = int(str(env.plone_version()[0]))
     if plone_version < 5:
         theme = "plonetheme.classic:default, plonetheme.sunburst:default"
     else:
