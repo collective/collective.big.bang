@@ -5,7 +5,8 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added tests and better support for plone from 4.3 to 6.0.
+  [odelaere]
 
 
 1.0a3 (2021-10-04)
