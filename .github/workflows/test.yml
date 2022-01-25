@@ -46,7 +46,7 @@ jobs:
     - name: Not active
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
@@ -54,7 +54,7 @@ jobs:
     - name: Active default
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
@@ -64,7 +64,7 @@ jobs:
     - name: Create custom site
       run: |
         bin/instance start
-        sleep 10
+        sleep 15
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
