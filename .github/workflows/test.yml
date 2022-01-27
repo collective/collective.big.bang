@@ -61,6 +61,17 @@ jobs:
         bin/instance run test_scripts/created_default_site.py
       env:
         ACTIVE_BIGBANG: "True"
+    - name: Active bad site id
+      run: |
+        bin/instance start
+        sleep 15
+        bin/instance stop
+        cat var/log/instance.log
+        rm var/log/instance.log
+        bin/instance run test_scripts/created_default_site.py
+      env:
+        ACTIVE_BIGBANG: "True"
+        SITE_ID: "test/Plone"
     - name: Create custom site
       run: |
         bin/instance start
