@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0b2 (unreleased)
+1.0b2 (2022-01-27)
 ------------------
 
 - Ignore mountpoint configurations in site creation.
