@@ -39,7 +39,7 @@ def bang(event):
         site_id = os.getenv("SITE_ID", "Plone")
         oids = container.objectIds()
 
-        if site_id not in oids:
+        if site_id not in oids and '/' not in site_id:
             acl_users = app.acl_users
             user = acl_users.getUser("admin")
             if user:
@@ -61,7 +61,6 @@ def bang(event):
             )
 
             default_language = os.getenv("DEFAULT_LANGUAGE", "en")
-
             addPloneSite(
                 container,
                 site_id,

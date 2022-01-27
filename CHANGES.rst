@@ -5,7 +5,8 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ignore mountpoint configurations in site creation.
+  [odelaere]
 
 
 1.0b1 (2022-01-25)
