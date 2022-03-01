@@ -22,9 +22,9 @@ buildout-5.2: cleanall
 	bin/buildout -c test_plone-5.2.cfg
 
 buildout-6.0: cleanall
-	virtualenv .
+	python3 -m venv .
 	bin/pip install -r requirements-6.0.txt
 	bin/buildout -c test_plone-6.0.cfg
-
+    
 cleanall:
 	rm -fr bin develop-eggs lib include share .installed.cfg .mr.developer.cfg pyvenv.cfg parts downloads eggs
