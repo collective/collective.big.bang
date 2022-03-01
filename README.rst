@@ -82,7 +82,7 @@ DEFAULT_LANGUAGE
 
 ADMIN_PASSWORD
     The password for the zope "admin" user.
-    Default value is ``admin``
+    There is no default value, if variable is not set, admin password will not be updated.
 
 ACTIVE_BIGBANG
     Create a Plone site on this instance. This variable is used to avoid conflict error, this variable should be set to True to only one instance
