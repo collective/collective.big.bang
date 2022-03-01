@@ -83,7 +83,7 @@ def bang(event):
                 )
             )
 
-        admin_password = os.getenv("ADMIN_PASSWORD", "admin")
+        admin_password = os.getenv("ADMIN_PASSWORD", None)
         if admin_password:
             # update zope admin password
             users = container.acl_users.users
