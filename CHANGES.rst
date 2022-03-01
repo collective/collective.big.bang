@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.0b3 (unreleased)
-------------------
+1.0 (2022-03-01)
+----------------
 
 - Do not set "admin" password if ADMIN_PASSWORD env variable is not set.
   [bsuttor]
