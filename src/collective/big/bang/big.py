@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
-from event import DarwinStartedEvent
+from collective.big.bang.event import DarwinStartedEvent
 from plone.api import env
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
