@@ -11,5 +11,5 @@ class DarwinStartedEvent(ObjectModifiedEvent):
         super(DarwinStartedEvent, self).__init__(
             object,
             "The earth began to cool, the autotrophs began to drool. "
-            "Neanderthals developed tools",
+            "Neanderthals developed tools...",
         )
