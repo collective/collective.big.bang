@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
+from event import DarwinStartedEvent
 from plone.api import env
-from pkg_resources import parse_version
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Testing.makerequest import makerequest
 from zope.component.hooks import setSite
+from zope.event import notify
 from zope.globalrequest import setRequest
 
 import logging
@@ -39,7 +40,7 @@ def bang(event):
         site_id = os.getenv("SITE_ID", "Plone")
         oids = container.objectIds()
 
-        if site_id not in oids and '/' not in site_id:
+        if site_id not in oids and "/" not in site_id:
             acl_users = app.acl_users
             user = acl_users.getUser("admin")
             if user:
@@ -90,3 +91,6 @@ def bang(event):
             users.updateUserPassword("admin", admin_password)
             transaction.commit()
             logger.info("Admin password updated")
+
+        plone = getattr(container, site_id)
+        notify(DarwinStartedEvent(plone))

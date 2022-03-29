@@ -5,7 +5,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Notify an event after bang.
+  [odelaere]
 
 
 1.0 (2022-03-01)
