@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.1 (unreleased)
+1.0.1 (2022-04-15)
 ------------------
 
 - Notify an event after bang.
