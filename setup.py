@@ -16,7 +16,7 @@ long_description = "\n\n".join(
 
 setup(
     name="collective.big.bang",
-    version="1.0.2.dev0",
+    version="1.0.2",
     description="Add-on which create Plone site into Zope",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/

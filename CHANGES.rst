@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.2 (unreleased)
+1.0.2 (2022-05-13)
 ------------------
 
 - Fix mountpoints break bid.bang execution.
