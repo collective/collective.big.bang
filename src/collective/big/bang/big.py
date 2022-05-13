@@ -84,12 +84,15 @@ def bang(event):
             )
 
         admin_password = os.getenv("ADMIN_PASSWORD", None)
-        if admin_password:
+        if admin_password and hasattr(app.acl_users, 'users'):
             # update zope admin password
             users = app.acl_users.users
             users.updateUserPassword("admin", admin_password)
             transaction.commit()
             logger.info("Admin password updated")
 
-        plone = app.unrestrictedTraverse(site_id)
-        notify(DarwinStartedEvent(plone))
+        try:
+            plone = app.unrestrictedTraverse(site_id)
+            notify(DarwinStartedEvent(plone))
+        except KeyError as err:
+            logger.info("Site not found at path " + site_id)

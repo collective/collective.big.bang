@@ -5,7 +5,8 @@ Changelog
 1.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Do not notify DarwinStartedEvent if site doesn't exist.
+  [odelaere]
 
 
 1.0.2 (2022-05-13)
