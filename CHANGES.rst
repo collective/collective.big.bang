@@ -5,8 +5,8 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix mountpoints break bid.bang execution.
+  [odelaere]
 
 1.0.1 (2022-04-15)
 ------------------

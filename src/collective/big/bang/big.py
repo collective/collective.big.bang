@@ -39,7 +39,6 @@ def bang(event):
 
         site_id = os.getenv("SITE_ID", "Plone")
         oids = container.objectIds()
-
         if site_id not in oids and "/" not in site_id:
             acl_users = app.acl_users
             user = acl_users.getUser("admin")
@@ -87,10 +86,10 @@ def bang(event):
         admin_password = os.getenv("ADMIN_PASSWORD", None)
         if admin_password:
             # update zope admin password
-            users = container.acl_users.users
+            users = app.acl_users.users
             users.updateUserPassword("admin", admin_password)
             transaction.commit()
             logger.info("Admin password updated")
 
-        plone = getattr(container, site_id)
+        plone = app.unrestrictedTraverse(site_id)
         notify(DarwinStartedEvent(plone))
