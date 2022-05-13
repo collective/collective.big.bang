@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from collective.big.bang.interface import IDarwinStartedEvent
+from collective.big.bang.interfaces import IDarwinStartedEvent
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
 

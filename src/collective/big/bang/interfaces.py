@@ -5,5 +5,5 @@ from zope.lifecycleevent import IObjectModifiedEvent
 
 class IDarwinStartedEvent(IObjectModifiedEvent):
     """
-    Site is created an admin password updated.
+    After site is created and admin password updated.
     """
