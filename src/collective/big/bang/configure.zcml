@@ -3,16 +3,18 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="collective.big.bang">
-
+    i18n_domain="collective.big.bang"
+    >
 
   <utility
       factory=".setuphandlers.HiddenProfiles"
       name="collective.big.bang-hiddenprofiles"
       />
 
-  <subscriber for="zope.processlifetime.IProcessStarting"
-      handler=".big.bang"/>
+  <subscriber
+      for="zope.processlifetime.IProcessStarting"
+      handler=".big.bang"
+      />
 
 
 </configure>
