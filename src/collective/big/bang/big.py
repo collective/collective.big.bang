@@ -32,59 +32,12 @@ def bang(event):
     is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
     if is_bigbang_active == "True":
         app = Zope2.app()
-        app = makerequest(app)
-        app.REQUEST["PARENTS"] = [app]
-        setRequest(app.REQUEST)
-        container = app.unrestrictedTraverse("/")
-
         site_id = os.getenv("SITE_ID", "Plone")
-        oids = container.objectIds()
-        if site_id not in oids and "/" not in site_id:
-            acl_users = app.acl_users
-            user = acl_users.getUser("admin")
-            if user:
-                user = user.__of__(acl_users)
-                newSecurityManager(None, user)
-                logger.info("Retrieved the admin user")
-            else:
-                logger.error("No admin user")
-                return
 
-            # install Plone site
-            extension_ids = tuple(
-                [
-                    extension.strip()
-                    for extension in os.getenv(
-                        "PLONE_EXTENSION_IDS", _default_packages_for_plone_version()
-                    ).split(",")
-                ]
-            )
-
-            default_language = os.getenv("DEFAULT_LANGUAGE", "en")
-            addPloneSite(
-                container,
-                site_id,
-                title="{0} site".format(site_id),
-                profile_id=_DEFAULT_PROFILE,
-                extension_ids=extension_ids,
-                setup_content=True,
-                default_language=default_language,
-            )
-
-            plone = getattr(container, site_id)
-            setSite(plone)
-            noSecurityManager()
-            transaction.commit()
-            logger.info("Plone Site created")
-        else:
-            logger.info(
-                "A Plone Site '{0}' already exists and will not be replaced".format(
-                    site_id
-                )
-            )
+        create_plone_site(app, site_id)
 
         admin_password = os.getenv("ADMIN_PASSWORD", None)
-        if admin_password and hasattr(app.acl_users, 'users'):
+        if admin_password and getattr(app.acl_users, "users", None):
             # update zope admin password
             users = app.acl_users.users
             users.updateUserPassword("admin", admin_password)
@@ -96,3 +49,52 @@ def bang(event):
             notify(DarwinStartedEvent(plone))
         except KeyError as err:
             logger.info("Site not found at path " + site_id)
+
+
+def create_plone_site(app, site_id):
+    app = makerequest(app)
+    app.REQUEST["PARENTS"] = [app]
+    setRequest(app.REQUEST)
+    container = app.unrestrictedTraverse("/")
+    oids = container.objectIds()
+    if site_id not in oids and "/" not in site_id:
+        acl_users = app.acl_users
+        user = acl_users.getUser("admin")
+        if user:
+            user = user.__of__(acl_users)
+            newSecurityManager(None, user)
+            logger.info("Retrieved the admin user")
+        else:
+            logger.error("No admin user")
+            return
+
+        # install Plone site
+        extension_ids = tuple(
+            [
+                extension.strip()
+                for extension in os.getenv(
+                    "PLONE_EXTENSION_IDS", _default_packages_for_plone_version()
+                ).split(",")
+            ]
+        )
+
+        default_language = os.getenv("DEFAULT_LANGUAGE", "en")
+        addPloneSite(
+            container,
+            site_id,
+            title="{0} site".format(site_id),
+            profile_id=_DEFAULT_PROFILE,
+            extension_ids=extension_ids,
+            setup_content=True,
+            default_language=default_language,
+        )
+
+        plone = getattr(container, site_id)
+        setSite(plone)
+        noSecurityManager()
+        transaction.commit()
+        logger.info("Plone Site created")
+    else:
+        logger.info(
+            "A Plone Site '{0}' already exists and will not be replaced".format(site_id)
+        )
