@@ -3,7 +3,11 @@
 
 ## 1.0.4 (unreleased)
 
-- Nothing changed yet.
+- Added expansion feature, which allows to perform all pending upgrade steps in one operation.
+  [bsuttor]
+
+- Upgrade dev environment to Plone 6.1
+  [remdub]
 
 
 ## 1.0.3 (2022-05-13)
