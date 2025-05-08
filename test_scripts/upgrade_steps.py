@@ -7,6 +7,8 @@ import transaction
 
 def main(app):
     site_id = os.getenv("SITE_ID", "Plone")
+    if site_id in app.objectIds():
+        del app[site_id]
     create_plone_site(app, site_id)
     assert site_id in app.objectIds(), "Plone site not existing"
     plone = app.get(site_id)

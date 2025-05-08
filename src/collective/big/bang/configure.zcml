@@ -17,7 +17,6 @@
       handler=".big.bang"
       />
 
-  <!--for="zope.processlifetime.IDatabaseOpenedWithRoot"-->
   <subscriber
       for="zope.processlifetime.IDatabaseOpenedWithRoot"
       handler=".expansion.started"

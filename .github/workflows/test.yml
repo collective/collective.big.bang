@@ -92,3 +92,8 @@ jobs:
         bin/instance run test_scripts/admin_password_not_updated.py
       env:
         ADMIN_PASSWORD: test1234
+    - name: Run all upgrade steps
+      run: |
+        bin/instance run test_scripts/upgrade_steps.py
+      env:
+        ACTIVE_BIGBANG_EXPANSION: "True"

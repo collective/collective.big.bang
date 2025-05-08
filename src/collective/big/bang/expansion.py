@@ -62,7 +62,7 @@ def upgrade_one_profile(setup, profile_id):
         do_upgrades(setup, profile_id, upgrades)
         upgrades = list_upgrades(setup, profile_id)
     else:
-        logger.info("Finished upgrading {1} profile".format(profile_id))
+        logger.info("Finished upgrading {0} profile".format(profile_id))
 
 
 def list_upgrades(setup, profile_id):
