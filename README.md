@@ -20,6 +20,8 @@ This package is used to create a Plone site when Zope is started (just before th
 
 You can use environment variables to create the Plone site and choose which packages you would like to install. See "Environment variables".
 
+You can also expand your Plone site by starting automaticaly all pending upgrade steps when database opened.
+
 ### Why not use `collective.recipe.plonesite`?
 
 The goal is to create the Plone site when you deploy a new Plone in a containerized environment.
@@ -44,6 +46,7 @@ environment-vars =
     DEFAULT_LANGUAGE fr
     ADMIN_PASSWORD mysuperpa$$w0rd
     ACTIVE_BIGBANG True
+    ACTIVE_BIGBANG_EXPANSION True
 ```
 
 Or use tools like [`direnv`](https://direnv.net/) (example `.envrc` file):
@@ -53,6 +56,7 @@ export PLONE_EXTENSION_IDS=plone.app.caching:default,plonetheme.barceloneta:defa
 export DEFAULT_LANGUAGE=fr
 export ADMIN_PASSWORD=mysuperpa$$w0rd
 export ACTIVE_BIGBANG=True
+export ACTIVE_BIGBANG_EXPANSION=True
 ```
 
 ### `PLONE_EXTENSION_IDS`
@@ -72,11 +76,17 @@ Create a Plone site on this instance.
 Used to avoid conflict errors; should be `True` on only one instance.
 **Default:** `False`
 
+### `ACTIVE_BIGBANG_EXPANSION`
+Expansion of the Plone universe, it run all pending upgrades.
+Used to avoid conflict errors; should be `True` on only one instance.
+**Default:** `False`
+
 ---
 
 ## Features
 
 - Creates Plone site when Zope is started.
+- Run all pending upgrade steps when database is open.
 
 ## Installation
 
@@ -99,6 +109,7 @@ environment-vars =
     DEFAULT_LANGUAGE fr
     ADMIN_PASSWORD mysuperpa$$w0rd
     ACTIVE_BIGBANG True
+    ACTIVE_BIGBANG_EXPANSION True
 ```
 
 Then run:
