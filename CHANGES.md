@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.1.0 (2025-10-14)
+## 1.0.4 (unreleased)
 
 - Added expansion feature, which allows to perform all pending upgrade steps in one operation.
   [bsuttor]
