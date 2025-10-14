@@ -19,6 +19,7 @@ setup(
     version="1.0.4.dev0",
     description="Add-on which create Plone site into Zope",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     # Get more from https://pypi.org/classifiers/
     classifiers=[
         "Environment :: Web Environment",
