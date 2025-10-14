@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.1.1 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 1.1.0 (2025-10-14)
 
 - Added expansion feature, which allows to perform all pending upgrade steps in one operation.
