@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.4 (unreleased)
+1.0.4 (2025-10-29)
 ------------------
 
 - Compatible with Python 2.7 and Plone 4.3 in setup.py.
