@@ -5,7 +5,8 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Compatible with Python 2.7 and Plone 4.3 in setup.py.
+  [aduchene]
 
 
 1.0.3 (2022-05-13)
@@ -20,6 +21,7 @@ Changelog
 
 - Fix mountpoints break bid.bang execution.
   [odelaere]
+
 
 1.0.1 (2022-04-15)
 ------------------
