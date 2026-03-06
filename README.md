@@ -87,6 +87,77 @@ Used to avoid conflict errors; should be `True` on only one instance.
 
 - Creates Plone site when Zope is started.
 - Run all pending upgrade steps when database is open.
+- Run scripts to create sites and run upgrade steps on demand.
+
+---
+
+## Run Scripts
+
+In addition to automatic site creation on startup, `collective.big.bang` provides run scripts for manual execution. These are useful when you want more control over when sites are created or upgrades are run.
+
+### bin/create_site
+
+Creates a Plone site using the modern `plone.distribution` API, supporting distributions like `default`, `classic`, or `volto`.
+
+**Usage:**
+
+```bash
+# Create site with defaults
+bin/create_site
+
+# Create site with custom settings
+SITE_ID=mysite DISTRIBUTION=default bin/create_site
+
+# Recreate existing site
+DELETE_EXISTING=True bin/create_site
+
+# With additional profiles
+ADDITIONAL_PROFILES="my.addon:default,another.addon:default" bin/create_site
+```
+
+**Environment Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DISTRIBUTION` | `default` | Distribution name (`default`, `classic`, `volto`) |
+| `SITE_ID` | `Plone` | Site ID in Zope |
+| `DEFAULT_LANGUAGE` | `en` | Default language code |
+| `SETUP_CONTENT` | `True` | Create example content |
+| `TIMEZONE` | `Europe/Brussels` | Portal timezone |
+| `DELETE_EXISTING` | `False` | Delete existing site if present |
+| `ADDITIONAL_PROFILES` | | Comma-separated GenericSetup profiles to install |
+| `ADMIN_PASSWORD` | | Password for Zope admin user (optional) |
+
+### bin/upgrade_steps
+
+Runs all pending GenericSetup upgrade steps for all installed profiles.
+
+**Usage:**
+
+```bash
+# Run upgrade steps on default site
+bin/upgrade_steps
+
+# Run upgrade steps on specific site
+SITE_ID=mysite bin/upgrade_steps
+```
+
+**Environment Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SITE_ID` | `Plone` | Site ID in Zope |
+
+### Alternative: bin/instance run
+
+You can also run the scripts using `bin/instance run`:
+
+```bash
+bin/instance run scripts/create_site.py
+bin/instance run scripts/upgrade_steps.py
+```
+
+---
 
 ## Installation
 

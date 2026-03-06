@@ -71,6 +71,10 @@ setup(
             "plone.app.robotframework[debug]",
         ],
     },
-    entry_points="""
-    """,
+    entry_points={
+        "console_scripts": [
+            "create_site=collective.big.bang.scripts.create_site:main",
+            "upgrade_steps=collective.big.bang.scripts.upgrade_steps:main",
+        ],
+    },
 )
