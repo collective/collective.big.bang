@@ -13,7 +13,7 @@ Usage with bin/instance run:
     bin/instance run scripts/create_site.py
 
 Environment Variables:
-    DISTRIBUTION       - Distribution name (default: "default")
+    DISTRIBUTION       - Distribution name (default: "classic")
     SITE_ID           - Site ID in Zope (default: "Plone")
     DEFAULT_LANGUAGE  - Default language code (default: "en")
     SETUP_CONTENT     - Create example content (default: "True")
