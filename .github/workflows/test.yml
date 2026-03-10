@@ -103,15 +103,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
-    - name: Install package and coverage
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+    - name: Run tests
       run: |
-        pip install -e . coverage
-    - name: Run coverage
-      run: |
-        python -m coverage run -m unittest discover -s src/collective/big/bang/tests -p "test_scripts.py" -p "test_big_and_expansion.py" -v
-        python -m coverage report --include="src/collective/big/bang/*.py"
-        python -m coverage report --format=markdown --include="src/collective/big/bang/*.py" >> $GITHUB_STEP_SUMMARY
+        uv run --with pytest --with pytest-cov pytest --cov --cov-report=term-missing -v
+        uv run --with coverage python -m coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
