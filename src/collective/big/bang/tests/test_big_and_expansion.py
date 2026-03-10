@@ -261,6 +261,24 @@ class TestBigPy(unittest.TestCase):
         _STUBS["AccessControl.SecurityManagement"].newSecurityManager.assert_not_called()
 
     # ------------------------------------------------------------------
+    # ensure_admin_user
+    # ------------------------------------------------------------------
+
+    def test_ensure_admin_user_creates_when_missing(self):
+        app = MagicMock()
+        app.acl_users.getUser.return_value = None
+        _STUBS["transaction"].commit.reset_mock()
+        self.mod.ensure_admin_user(app)
+        app.acl_users._doAddUser.assert_called_once_with("admin", "admin", ["Manager"], [])
+        _STUBS["transaction"].commit.assert_called_once()
+
+    def test_ensure_admin_user_skips_when_exists(self):
+        app = MagicMock()
+        app.acl_users.getUser.return_value = MagicMock()
+        self.mod.ensure_admin_user(app)
+        app.acl_users._doAddUser.assert_not_called()
+
+    # ------------------------------------------------------------------
     # setup_request
     # ------------------------------------------------------------------
 
