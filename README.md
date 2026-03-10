@@ -95,7 +95,7 @@ Used to avoid conflict errors; should be `True` on only one instance.
 
 In addition to automatic site creation on startup, `collective.big.bang` provides run scripts for manual execution. These are useful when you want more control over when sites are created or upgrades are run.
 
-### bin/create_site
+### bin/create-site
 
 Creates a Plone site using the modern `plone.distribution` API, supporting distributions like `default`, `classic`, or `volto`.
 
@@ -103,23 +103,20 @@ Creates a Plone site using the modern `plone.distribution` API, supporting distr
 
 ```bash
 # Create site with defaults
-bin/create_site
-
-# Create site with custom settings
-SITE_ID=mysite DISTRIBUTION=default bin/create_site
+SITE_ID=Plone DISTRIBUTION=classic ./bin/create-site parts/instance/etc/zope.conf
 
 # Recreate existing site
-DELETE_EXISTING=True bin/create_site
+DELETE_EXISTING=True ./bin/create-site parts/instance/etc/zope.conf
 
 # With additional profiles
-ADDITIONAL_PROFILES="my.addon:default,another.addon:default" bin/create_site
+ADDITIONAL_PROFILES="my.addon:default,another.addon:default" ./bin/create-site parts/instance/etc/zope.conf
 ```
 
 **Environment Variables:**
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `DISTRIBUTION` | `default` | Distribution name (`default`, `classic`, `volto`) |
+| `DISTRIBUTION` | `classic` | Distribution name (`default`, `classic`, `volto`) |
 | `SITE_ID` | `Plone` | Site ID in Zope |
 | `DEFAULT_LANGUAGE` | `en` | Default language code |
 | `SETUP_CONTENT` | `True` | Create example content |
@@ -128,7 +125,7 @@ ADDITIONAL_PROFILES="my.addon:default,another.addon:default" bin/create_site
 | `ADDITIONAL_PROFILES` | | Comma-separated GenericSetup profiles to install |
 | `ADMIN_PASSWORD` | | Password for Zope admin user (optional) |
 
-### bin/upgrade_steps
+### bin/upgrade-steps
 
 Runs all pending GenericSetup upgrade steps for all installed profiles.
 
@@ -136,10 +133,10 @@ Runs all pending GenericSetup upgrade steps for all installed profiles.
 
 ```bash
 # Run upgrade steps on default site
-bin/upgrade_steps
+SITE_ID=Plone ./bin/upgrade-steps parts/instance/etc/zope.conf
 
 # Run upgrade steps on specific site
-SITE_ID=mysite bin/upgrade_steps
+SITE_ID=Plone ./bin/upgrade-steps parts/instance/etc/zope.conf
 ```
 
 **Environment Variables:**
@@ -147,15 +144,6 @@ SITE_ID=mysite bin/upgrade_steps
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `SITE_ID` | `Plone` | Site ID in Zope |
-
-### Alternative: bin/instance run
-
-You can also run the scripts using `bin/instance run`:
-
-```bash
-bin/instance run scripts/create_site.py
-bin/instance run scripts/upgrade_steps.py
-```
 
 ---
 

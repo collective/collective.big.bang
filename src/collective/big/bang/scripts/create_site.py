@@ -25,6 +25,7 @@ Environment Variables:
 from AccessControl.SecurityManagement import noSecurityManager
 from collective.big.bang.big import apply_additional_profiles
 from collective.big.bang.big import delete_site
+from collective.big.bang.big import ensure_admin_user
 from collective.big.bang.big import get_bool_env
 from collective.big.bang.big import logger
 from collective.big.bang.big import setup_request
@@ -44,7 +45,7 @@ def create_site(app):
     from plone.distribution.api import site as site_api
 
     # Read configuration from environment variables
-    distribution = os.getenv("DISTRIBUTION", "default")
+    distribution = os.getenv("DISTRIBUTION", "classic")
     site_id = os.getenv("SITE_ID", "Plone")
     default_language = os.getenv("DEFAULT_LANGUAGE", "en")
     setup_content = get_bool_env("SETUP_CONTENT", True)
@@ -59,6 +60,9 @@ def create_site(app):
 
     # Set up request
     app = setup_request(app)
+
+    # Ensure admin user exists (handles fresh Data.fs after reset)
+    ensure_admin_user(app)
 
     # Set up security
     if not setup_security(app):

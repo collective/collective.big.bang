@@ -38,6 +38,16 @@ def setup_request(app):
     return app
 
 
+def ensure_admin_user(app, username="admin", password="admin"):
+    """Create the Zope admin user if it does not exist (e.g. after Data.fs reset)."""
+    acl_users = app.acl_users
+    if acl_users.getUser(username):
+        return
+    acl_users._doAddUser(username, password, ["Manager"], [])
+    transaction.commit()
+    logger.info(f"Created Zope admin user '{username}'")
+
+
 def setup_security(app):
     """Set up security context with admin user."""
     acl_users = app.acl_users

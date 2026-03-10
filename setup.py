@@ -73,8 +73,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "create_site=collective.big.bang.scripts.create_site:main",
-            "upgrade_steps=collective.big.bang.scripts.upgrade_steps:main",
+            "create-site=collective.big.bang.scripts.create_site:main",
+            "upgrade-steps=collective.big.bang.scripts.upgrade_steps:main",
         ],
     },
 )
