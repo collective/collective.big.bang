@@ -133,7 +133,7 @@ jobs:
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
-        bin/python -m coverage run --append bin/instance run test_scripts/did_nothing_not_active.py
+        python -m coverage run --append bin/instance run test_scripts/did_nothing_not_active.py
     - name: Active default
       run: |
         bin/instance start
@@ -141,7 +141,7 @@ jobs:
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
-        bin/python -m coverage run --append bin/instance run test_scripts/created_default_site.py
+        python -m coverage run --append bin/instance run test_scripts/created_default_site.py
       env:
         ACTIVE_BIGBANG: "True"
     - name: Active bad site id
@@ -151,7 +151,7 @@ jobs:
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
-        bin/python -m coverage run --append bin/instance run test_scripts/created_default_site.py
+        python -m coverage run --append bin/instance run test_scripts/created_default_site.py
       env:
         ACTIVE_BIGBANG: "True"
         SITE_ID: "test/Plone"
@@ -162,7 +162,7 @@ jobs:
         bin/instance stop
         cat var/log/instance.log
         rm var/log/instance.log
-        bin/python -m coverage run --append bin/instance run test_scripts/created_site_with_id_and_profiles.py
+        python -m coverage run --append bin/instance run test_scripts/created_site_with_id_and_profiles.py
       env:
         ACTIVE_BIGBANG: "True"
         SITE_ID: testingsite
@@ -170,18 +170,18 @@ jobs:
         DEFAULT_LANGUAGE: fr
     - name: Update admin password
       run: |
-        bin/python -m coverage run --append bin/instance run test_scripts/admin_password_updated.py
+        python -m coverage run --append bin/instance run test_scripts/admin_password_updated.py
       env:
         ADMIN_PASSWORD: test
         ACTIVE_BIGBANG: "True"
     - name: Admin password not updated if big bang not activated
       run: |
-        bin/python -m coverage run --append bin/instance run test_scripts/admin_password_not_updated.py
+        python -m coverage run --append bin/instance run test_scripts/admin_password_not_updated.py
       env:
         ADMIN_PASSWORD: test1234
     - name: Run all upgrade steps
       run: |
-        bin/python -m coverage run --append bin/instance run test_scripts/upgrade_steps.py
+        python -m coverage run --append bin/instance run test_scripts/upgrade_steps.py
       env:
         ACTIVE_BIGBANG_EXPANSION: "True"
     - name: Coverage report
