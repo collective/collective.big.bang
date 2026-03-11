@@ -3,8 +3,14 @@
 
 ## 1.1.1 (unreleased)
 
+- Add `ensure_admin_user()` to ensure Zope admin user exists on fresh Data.fs (container environments).
+  [bsuttor]
 
-- Nothing changed yet.
+- Add console script entry points `create-site` and `upgrade-steps`.
+  [bsuttor]
+
+- Refactor test suite to use pytest and uv.
+  [bsuttor]
 
 
 ## 1.1.0 (2025-10-14)
