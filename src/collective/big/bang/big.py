@@ -19,6 +19,82 @@ import Zope2
 logger = logging.getLogger("collective.big.bang")
 
 
+# =============================================================================
+# Shared utilities
+# =============================================================================
+
+
+def get_bool_env(name, default):
+    """Get boolean value from environment variable."""
+    value = os.getenv(name, str(default))
+    return value.lower() in ("true", "1", "yes")
+
+
+def setup_request(app):
+    """Set up request for the app."""
+    app = makerequest(app)
+    app.REQUEST["PARENTS"] = [app]
+    setRequest(app.REQUEST)
+    return app
+
+
+def ensure_admin_user(app, username="admin", password="admin"):
+    """Create the Zope admin user if it does not exist (e.g. after Data.fs reset)."""
+    acl_users = app.acl_users
+    if acl_users.getUser(username):
+        return
+    acl_users._doAddUser(username, password, ["Manager"], [])
+    transaction.commit()
+    logger.info(f"Created Zope admin user '{username}'")
+
+
+def setup_security(app):
+    """Set up security context with admin user."""
+    acl_users = app.acl_users
+    user = acl_users.getUser("admin")
+    if user:
+        user = user.__of__(acl_users)
+        newSecurityManager(None, user)
+        logger.info("Security context established with admin user")
+        return True
+    else:
+        logger.error("No admin user found")
+        return False
+
+
+def delete_site(container, site_id):
+    """Delete existing site if present."""
+    if site_id in container.objectIds():
+        container.manage_delObjects([site_id])
+        transaction.commit()
+        logger.info(f"Deleted existing site: {site_id}")
+        return True
+    return False
+
+
+def apply_additional_profiles(site, profiles_str):
+    """Apply additional GenericSetup profiles."""
+    if not profiles_str:
+        return
+
+    setup_tool = site.portal_setup
+    profiles = [p.strip() for p in profiles_str.split(",") if p.strip()]
+
+    for profile in profiles:
+        if not profile.startswith("profile-"):
+            profile = f"profile-{profile}"
+        try:
+            setup_tool.runAllImportStepsFromProfile(profile)
+            logger.info(f"Applied profile: {profile}")
+        except Exception as e:
+            logger.error(f"Failed to apply profile {profile}: {e}")
+
+
+# =============================================================================
+# Original big bang functionality (event-based site creation)
+# =============================================================================
+
+
 def _default_packages_for_plone_version():
     plone_version = int(str(env.plone_version()[0]))
     if plone_version < 5:
@@ -28,44 +104,28 @@ def _default_packages_for_plone_version():
     return "plone.app.caching:default, " + theme
 
 
-def bang(event):
+def bang(event=""):
     is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
     if is_bigbang_active == "True":
         app = Zope2.app()
         site_id = os.getenv("SITE_ID", "Plone")
 
         create_plone_site(app, site_id)
-
-        admin_password = os.getenv("ADMIN_PASSWORD", None)
-        if admin_password and getattr(app.acl_users, "users", None):
-            # update zope admin password
-            users = app.acl_users.users
-            users.updateUserPassword("admin", admin_password)
-            transaction.commit()
-            logger.info("Admin password updated")
+        update_admin_password(app)
 
         try:
             plone = app.unrestrictedTraverse(site_id)
             notify(DarwinStartedEvent(plone))
-        except KeyError as err:
+        except KeyError:
             logger.info("Site not found at path " + site_id)
 
 
 def create_plone_site(app, site_id):
-    app = makerequest(app)
-    app.REQUEST["PARENTS"] = [app]
-    setRequest(app.REQUEST)
+    app = setup_request(app)
     container = app.unrestrictedTraverse("/")
     oids = container.objectIds()
     if site_id not in oids and "/" not in site_id:
-        acl_users = app.acl_users
-        user = acl_users.getUser("admin")
-        if user:
-            user = user.__of__(acl_users)
-            newSecurityManager(None, user)
-            logger.info("Retrieved the admin user")
-        else:
-            logger.error("No admin user")
+        if not setup_security(app):
             return
 
         # install Plone site
@@ -98,3 +158,13 @@ def create_plone_site(app, site_id):
         logger.info(
             "A Plone Site '{0}' already exists and will not be replaced".format(site_id)
         )
+
+
+def update_admin_password(app):
+    admin_password = os.getenv("ADMIN_PASSWORD", None)
+    if admin_password and getattr(app.acl_users, "users", None):
+        # update zope admin password
+        users = app.acl_users.users
+        users.updateUserPassword("admin", admin_password)
+        transaction.commit()
+        logger.info("Admin password updated")

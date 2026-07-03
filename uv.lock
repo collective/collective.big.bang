@@ -1,0 +1,8 @@
+version = 1
+revision = 2
+requires-python = ">=3.13"
+
+[[package]]
+name = "collective-big-bang"
+version = "1.1.1.dev0"
+source = { editable = "." }

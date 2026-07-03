@@ -3,3 +3,7 @@ setuptools
 zc.buildout
 wheel
 pip
+# Bridge our PEP 420 namespace with pkg_resources-style namespace eggs (e.g.
+# collective.monkeypatcher) under this Plone's zc.buildout. Must be pip-installed
+# into the virtualenv (not via buildout) so its .pth loads. See collective.big.bang.
+horse-with-no-namespace

@@ -87,6 +87,65 @@ Used to avoid conflict errors; should be `True` on only one instance.
 
 - Creates Plone site when Zope is started.
 - Run all pending upgrade steps when database is open.
+- Run scripts to create sites and run upgrade steps on demand.
+
+---
+
+## Run Scripts
+
+In addition to automatic site creation on startup, `collective.big.bang` provides run scripts for manual execution. These are useful when you want more control over when sites are created or upgrades are run.
+
+### bin/create-site
+
+Creates a Plone site using the modern `plone.distribution` API, supporting distributions like `default`, `classic`, or `volto`.
+
+**Usage:**
+
+```bash
+# Create site with defaults
+SITE_ID=Plone DISTRIBUTION=classic ./bin/create-site parts/instance/etc/zope.conf
+
+# Recreate existing site
+DELETE_EXISTING=True ./bin/create-site parts/instance/etc/zope.conf
+
+# With additional profiles
+ADDITIONAL_PROFILES="my.addon:default,another.addon:default" ./bin/create-site parts/instance/etc/zope.conf
+```
+
+**Environment Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DISTRIBUTION` | `classic` | Distribution name (`default`, `classic`, `volto`) |
+| `SITE_ID` | `Plone` | Site ID in Zope |
+| `DEFAULT_LANGUAGE` | `en` | Default language code |
+| `SETUP_CONTENT` | `True` | Create example content |
+| `TIMEZONE` | `Europe/Brussels` | Portal timezone |
+| `DELETE_EXISTING` | `False` | Delete existing site if present |
+| `ADDITIONAL_PROFILES` | | Comma-separated GenericSetup profiles to install |
+| `ADMIN_PASSWORD` | | Password for Zope admin user (optional) |
+
+### bin/upgrade-steps
+
+Runs all pending GenericSetup upgrade steps for all installed profiles.
+
+**Usage:**
+
+```bash
+# Run upgrade steps on default site
+SITE_ID=Plone ./bin/upgrade-steps parts/instance/etc/zope.conf
+
+# Run upgrade steps on specific site
+SITE_ID=Plone ./bin/upgrade-steps parts/instance/etc/zope.conf
+```
+
+**Environment Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SITE_ID` | `Plone` | Site ID in Zope |
+
+---
 
 ## Installation
 
