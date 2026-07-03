@@ -16,6 +16,11 @@ buildout-6.1: cleanall
 	bin/pip install -r requirements-6.1.txt
 	bin/buildout -c test_plone-6.1.cfg
 
+buildout-6.2: cleanall
+	python3 -m venv .
+	bin/pip install -r requirements-6.2.txt
+	bin/buildout -c test_plone-6.2.cfg
+
 test:
 	uv run --with pytest pytest -v
 

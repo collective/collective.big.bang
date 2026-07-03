@@ -18,6 +18,8 @@ jobs:
             plone: "6.0"
           - python: 3.13
             plone: "6.1"
+          - python: 3.13
+            plone: "6.2"
     steps:
     - name: Checkout
       uses: actions/checkout@v4
