@@ -4,7 +4,7 @@ all: run
 
 BUILDOUT_FILES = bin/buildout buildout.cfg buildout.d/*.cfg
 
-.PHONY: buildout-6.0 buildout-6.1 cleanall test coverage test-functional coverage-full
+.PHONY: buildout-6.0 buildout-6.1 buildout-6.2 cleanall test coverage test-functional coverage-full
 
 buildout-6.0: cleanall
 	python3 -m venv .
