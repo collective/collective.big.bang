@@ -16,7 +16,7 @@ long_description = "\n\n".join(
 
 setup(
     name="collective.big.bang",
-    version="1.2.1",
+    version="1.2.2.dev0",
     description="Add-on which create Plone site into Zope",
     long_description=long_description,
     long_description_content_type="text/markdown",
