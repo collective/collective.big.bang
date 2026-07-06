@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.2.1 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 1.2.0 (2026-07-06)
 
 - Add `ensure_admin_user()` to ensure Zope admin user exists on fresh Data.fs (container environments).
