@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.1 (unreleased)
+## 1.2.1 (2026-07-06)
 
 
 - Make the `create-site` script idempotent: when the target site already exists
