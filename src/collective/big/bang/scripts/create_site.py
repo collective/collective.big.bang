@@ -75,12 +75,14 @@ def create_site(app):
         if delete_existing:
             delete_site(container, site_id)
         else:
-            logger.warning(
-                f"Site '{site_id}' already exists. "
+            logger.info(
+                f"Site '{site_id}' already exists; nothing to do. "
                 "Set DELETE_EXISTING=True to replace it."
             )
             noSecurityManager()
-            return False
+            # Idempotent no-op: an existing site is a success, not a failure.
+            # This lets the k8s create-site Job re-run safely on every deploy.
+            return True
 
     # Build answers dict for plone.distribution.api
     answers = {

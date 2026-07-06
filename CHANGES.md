@@ -4,7 +4,11 @@
 ## 1.2.1 (unreleased)
 
 
-- Nothing changed yet.
+- Make the `create-site` script idempotent: when the target site already exists
+  (and `DELETE_EXISTING` is not set), log an info message and exit successfully
+  instead of failing. This lets the Kubernetes create-site Job re-run safely on
+  every deploy without hitting its backoff limit.
+  [bsuttor]
 
 
 ## 1.2.0 (2026-07-06)

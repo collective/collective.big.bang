@@ -323,7 +323,7 @@ class TestCreateSite(unittest.TestCase):
     def test_site_exists_no_delete(
         self, mock_setup_request, mock_setup_security, mock_no_sec
     ):
-        """Site present + DELETE_EXISTING=False → returns False, no creation."""
+        """Site present + DELETE_EXISTING=False → idempotent no-op returns True."""
         app, _container = _make_app_mock(object_ids=["Plone"])
         mock_setup_request.return_value = app
 
@@ -333,7 +333,7 @@ class TestCreateSite(unittest.TestCase):
         with patch.dict(os.environ, {"SITE_ID": "Plone", "DELETE_EXISTING": "False"}):
             result = self.mod.create_site(MagicMock())
 
-        self.assertFalse(result)
+        self.assertTrue(result)
         _create_site_spy.assert_not_called()
 
     # ------------------------------------------------------------------
