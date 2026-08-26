@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.2 (unreleased)
+## 1.2.2 (2026-08-26)
 
 
 - Fix `upgrade-steps` script (and `expansion.started`) raising
