@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.2.3 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 1.2.2 (2026-08-26)
 
 
