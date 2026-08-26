@@ -1,6 +1,8 @@
 from Products.Five.browser import BrowserView
 from Products.GenericSetup.upgrade import _upgrade_registry
 from Testing.makerequest import makerequest
+from zope.component.hooks import getSite
+from zope.component.hooks import setSite
 from zope.globalrequest import setRequest
 
 # from zope.interface import Interface
@@ -30,8 +32,15 @@ def started(event):
         oids = container.objectIds()
         if site_id in oids and "/" not in site_id:
             site = getattr(app, site_id, None)
+            previous_site = getSite()
+            if previous_site is not site:
+                setSite(site)
             portal_setup = site.portal_setup
-            upgrade_all_profiles(portal_setup)
+            try:
+                upgrade_all_profiles(portal_setup)
+            finally:
+                if previous_site is not site:
+                    setSite(previous_site)
 
 
 class ExpansionView(BrowserView):

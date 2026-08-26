@@ -20,6 +20,8 @@ from collective.big.bang.big import logger
 from collective.big.bang.big import setup_request
 from collective.big.bang.big import setup_security
 from collective.big.bang.expansion import upgrade_all_profiles
+from zope.component.hooks import getSite
+from zope.component.hooks import setSite
 
 import argparse
 import logging
@@ -56,6 +58,10 @@ def run_upgrade_steps(app):
 
     portal_setup = site.portal_setup
 
+    previous_site = getSite()
+    if previous_site is not site:
+        setSite(site)
+
     # Run all pending upgrade steps
     try:
         upgrade_all_profiles(portal_setup)
@@ -63,9 +69,13 @@ def run_upgrade_steps(app):
     except Exception as e:
         logger.error(f"Failed to run upgrade steps: {e}")
         noSecurityManager()
+        if previous_site is not site:
+            setSite(previous_site)
         return False
 
     noSecurityManager()
+    if previous_site is not site:
+        setSite(previous_site)
     return True
 
 
