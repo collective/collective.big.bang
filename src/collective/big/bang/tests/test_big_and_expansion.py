@@ -65,6 +65,7 @@ def _build_stubs():  # noqa: C901
     s["zope"].component = s["zope.component"]
     s["zope.component"].hooks = s["zope.component.hooks"]
     s["zope.component.hooks"].setSite = MagicMock()
+    s["zope.component.hooks"].getSite = MagicMock()
     s["zope"].event = s["zope.event"]
     s["zope.event"].notify = MagicMock()
     s["zope"].globalrequest = s["zope.globalrequest"]
