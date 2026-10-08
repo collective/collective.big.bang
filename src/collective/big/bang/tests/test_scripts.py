@@ -415,9 +415,10 @@ class TestCreateSite(unittest.TestCase):
         mock_no_sec.assert_called_once()
 
     # ------------------------------------------------------------------
-    # create_site() – ADDITIONAL_PROFILES env var
+    # create_site() – PLONE_EXTENSION_IDS / ADDITIONAL_PROFILES env vars
     # ------------------------------------------------------------------
 
+    @patch("collective.big.bang.scripts.create_site.logger")
     @patch("collective.big.bang.scripts.create_site.update_admin_password")
     @patch("collective.big.bang.scripts.create_site.apply_additional_profiles")
     @patch("collective.big.bang.scripts.create_site.setSite")
@@ -425,7 +426,7 @@ class TestCreateSite(unittest.TestCase):
     @patch("collective.big.bang.scripts.create_site.transaction")
     @patch("collective.big.bang.scripts.create_site.setup_security", return_value=True)
     @patch("collective.big.bang.scripts.create_site.setup_request")
-    def test_with_additional_profiles(
+    def test_with_plone_extension_ids(
         self,
         mock_setup_request,
         mock_setup_security,
@@ -434,8 +435,45 @@ class TestCreateSite(unittest.TestCase):
         mock_set_site,
         mock_apply_profiles,
         mock_update_password,
+        mock_logger,
     ):
-        """ADDITIONAL_PROFILES set → apply_additional_profiles called with site."""
+        """PLONE_EXTENSION_IDS set → apply_additional_profiles called, no warning."""
+        app, _container = _make_app_mock(object_ids=[])
+        mock_setup_request.return_value = app
+
+        mock_site = MagicMock(name="new_site")
+        _STUBS["plone.distribution.api.site"]._create_site = MagicMock(
+            return_value=mock_site
+        )
+
+        with patch.dict(os.environ, {"PLONE_EXTENSION_IDS": "my.package:default"}):
+            os.environ.pop("ADDITIONAL_PROFILES", None)
+            result = self.mod.create_site(MagicMock())
+
+        self.assertTrue(result)
+        mock_apply_profiles.assert_called_once_with(mock_site, "my.package:default")
+        mock_logger.warning.assert_not_called()
+
+    @patch("collective.big.bang.scripts.create_site.logger")
+    @patch("collective.big.bang.scripts.create_site.update_admin_password")
+    @patch("collective.big.bang.scripts.create_site.apply_additional_profiles")
+    @patch("collective.big.bang.scripts.create_site.setSite")
+    @patch("collective.big.bang.scripts.create_site.noSecurityManager")
+    @patch("collective.big.bang.scripts.create_site.transaction")
+    @patch("collective.big.bang.scripts.create_site.setup_security", return_value=True)
+    @patch("collective.big.bang.scripts.create_site.setup_request")
+    def test_additional_profiles_deprecated(
+        self,
+        mock_setup_request,
+        mock_setup_security,
+        mock_transaction,
+        mock_no_sec,
+        mock_set_site,
+        mock_apply_profiles,
+        mock_update_password,
+        mock_logger,
+    ):
+        """Only ADDITIONAL_PROFILES set → still applied, deprecation warning logged."""
         app, _container = _make_app_mock(object_ids=[])
         mock_setup_request.return_value = app
 
@@ -445,10 +483,89 @@ class TestCreateSite(unittest.TestCase):
         )
 
         with patch.dict(os.environ, {"ADDITIONAL_PROFILES": "my.package:default"}):
+            os.environ.pop("PLONE_EXTENSION_IDS", None)
             result = self.mod.create_site(MagicMock())
 
         self.assertTrue(result)
         mock_apply_profiles.assert_called_once_with(mock_site, "my.package:default")
+        mock_logger.warning.assert_called_once()
+        self.assertIn("ADDITIONAL_PROFILES", mock_logger.warning.call_args[0][0])
+
+    @patch("collective.big.bang.scripts.create_site.logger")
+    @patch("collective.big.bang.scripts.create_site.update_admin_password")
+    @patch("collective.big.bang.scripts.create_site.apply_additional_profiles")
+    @patch("collective.big.bang.scripts.create_site.setSite")
+    @patch("collective.big.bang.scripts.create_site.noSecurityManager")
+    @patch("collective.big.bang.scripts.create_site.transaction")
+    @patch("collective.big.bang.scripts.create_site.setup_security", return_value=True)
+    @patch("collective.big.bang.scripts.create_site.setup_request")
+    def test_plone_extension_ids_takes_precedence(
+        self,
+        mock_setup_request,
+        mock_setup_security,
+        mock_transaction,
+        mock_no_sec,
+        mock_set_site,
+        mock_apply_profiles,
+        mock_update_password,
+        mock_logger,
+    ):
+        """Both set → PLONE_EXTENSION_IDS applied, ADDITIONAL_PROFILES ignored with warning."""
+        app, _container = _make_app_mock(object_ids=[])
+        mock_setup_request.return_value = app
+
+        mock_site = MagicMock(name="new_site")
+        _STUBS["plone.distribution.api.site"]._create_site = MagicMock(
+            return_value=mock_site
+        )
+
+        with patch.dict(
+            os.environ,
+            {
+                "PLONE_EXTENSION_IDS": "new.package:default",
+                "ADDITIONAL_PROFILES": "old.package:default",
+            },
+        ):
+            result = self.mod.create_site(MagicMock())
+
+        self.assertTrue(result)
+        mock_apply_profiles.assert_called_once_with(mock_site, "new.package:default")
+        mock_logger.warning.assert_called_once()
+        self.assertIn("ADDITIONAL_PROFILES", mock_logger.warning.call_args[0][0])
+
+    @patch("collective.big.bang.scripts.create_site.update_admin_password")
+    @patch("collective.big.bang.scripts.create_site.apply_additional_profiles")
+    @patch("collective.big.bang.scripts.create_site.setSite")
+    @patch("collective.big.bang.scripts.create_site.noSecurityManager")
+    @patch("collective.big.bang.scripts.create_site.transaction")
+    @patch("collective.big.bang.scripts.create_site.setup_security", return_value=True)
+    @patch("collective.big.bang.scripts.create_site.setup_request")
+    def test_no_extension_ids(
+        self,
+        mock_setup_request,
+        mock_setup_security,
+        mock_transaction,
+        mock_no_sec,
+        mock_set_site,
+        mock_apply_profiles,
+        mock_update_password,
+    ):
+        """Neither variable set → apply_additional_profiles not called."""
+        app, _container = _make_app_mock(object_ids=[])
+        mock_setup_request.return_value = app
+
+        mock_site = MagicMock(name="new_site")
+        _STUBS["plone.distribution.api.site"]._create_site = MagicMock(
+            return_value=mock_site
+        )
+
+        with patch.dict(os.environ):
+            os.environ.pop("PLONE_EXTENSION_IDS", None)
+            os.environ.pop("ADDITIONAL_PROFILES", None)
+            result = self.mod.create_site(MagicMock())
+
+        self.assertTrue(result)
+        mock_apply_profiles.assert_not_called()
 
     # ------------------------------------------------------------------
     # create_site() – update_admin_password always called

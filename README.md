@@ -109,7 +109,7 @@ SITE_ID=Plone DISTRIBUTION=classic ./bin/create-site parts/instance/etc/zope.con
 DELETE_EXISTING=True ./bin/create-site parts/instance/etc/zope.conf
 
 # With additional profiles
-ADDITIONAL_PROFILES="my.addon:default,another.addon:default" ./bin/create-site parts/instance/etc/zope.conf
+PLONE_EXTENSION_IDS="my.addon:default,another.addon:default" ./bin/create-site parts/instance/etc/zope.conf
 ```
 
 **Environment Variables:**
@@ -122,8 +122,13 @@ ADDITIONAL_PROFILES="my.addon:default,another.addon:default" ./bin/create-site p
 | `SETUP_CONTENT` | `True` | Create example content |
 | `TIMEZONE` | `Europe/Brussels` | Portal timezone |
 | `DELETE_EXISTING` | `False` | Delete existing site if present |
-| `ADDITIONAL_PROFILES` | | Comma-separated GenericSetup profiles to install |
+| `PLONE_EXTENSION_IDS` | | Comma-separated GenericSetup profiles to install (on top of the distribution's own profiles) |
 | `ADMIN_PASSWORD` | | Password for Zope admin user (optional) |
+
+**Note:** `ADDITIONAL_PROFILES` is deprecated in favor of `PLONE_EXTENSION_IDS`.
+It is still read (with a warning) when `PLONE_EXTENSION_IDS` is not set; if both are set, `PLONE_EXTENSION_IDS` wins.
+
+Unlike the startup hook (`ACTIVE_BIGBANG`), `create-site` does not notify `DarwinStartedEvent`.
 
 ### bin/upgrade-steps
 

@@ -19,7 +19,8 @@ Environment Variables:
     SETUP_CONTENT     - Create example content (default: "True")
     TIMEZONE          - Portal timezone (default: "Europe/Brussels")
     DELETE_EXISTING   - Delete existing site if present (default: "False")
-    ADDITIONAL_PROFILES - Comma-separated GenericSetup profiles to install
+    PLONE_EXTENSION_IDS - Comma-separated GenericSetup profiles to install
+    ADDITIONAL_PROFILES - Deprecated alias of PLONE_EXTENSION_IDS
     ADMIN_PASSWORD    - Password for Zope admin user (optional)
 """
 from AccessControl.SecurityManagement import noSecurityManager
@@ -40,6 +41,27 @@ import sys
 import transaction
 
 
+def get_extension_ids():
+    """Return extension profiles from PLONE_EXTENSION_IDS.
+
+    ADDITIONAL_PROFILES is still read as a deprecated fallback.
+    """
+    extension_ids = os.getenv("PLONE_EXTENSION_IDS", "")
+    additional_profiles = os.getenv("ADDITIONAL_PROFILES", "")
+    if additional_profiles:
+        if extension_ids:
+            logger.warning(
+                "ADDITIONAL_PROFILES is deprecated and ignored because "
+                "PLONE_EXTENSION_IDS is set. Remove ADDITIONAL_PROFILES."
+            )
+        else:
+            logger.warning(
+                "ADDITIONAL_PROFILES is deprecated, use PLONE_EXTENSION_IDS instead."
+            )
+            extension_ids = additional_profiles
+    return extension_ids
+
+
 def create_site(app):
     """Create a Plone site using plone.distribution.api."""
     from plone.distribution.api import site as site_api
@@ -51,12 +73,13 @@ def create_site(app):
     setup_content = get_bool_env("SETUP_CONTENT", True)
     timezone = os.getenv("TIMEZONE", "Europe/Brussels")
     delete_existing = get_bool_env("DELETE_EXISTING", False)
-    additional_profiles = os.getenv("ADDITIONAL_PROFILES", "")
+    extension_ids = get_extension_ids()
 
     logger.info(f"Creating site with distribution: {distribution}")
     logger.info(f"Site ID: {site_id}")
     logger.info(f"Language: {default_language}, Timezone: {timezone}")
     logger.info(f"Setup content: {setup_content}")
+    logger.info(f"Extension profiles: {extension_ids}")
 
     # Set up request
     app = setup_request(app)
@@ -110,9 +133,9 @@ def create_site(app):
     # Set site hook
     setSite(site)
 
-    # Apply additional profiles
-    if additional_profiles:
-        apply_additional_profiles(site, additional_profiles)
+    # Apply extension profiles
+    if extension_ids:
+        apply_additional_profiles(site, extension_ids)
 
     # Update admin password if specified
     update_admin_password(app)
