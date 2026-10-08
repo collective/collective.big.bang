@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.3 (unreleased)
+## 1.2.3 (2026-10-08)
 
 
 - `create-site` script now reads extension profiles from `PLONE_EXTENSION_IDS`,
