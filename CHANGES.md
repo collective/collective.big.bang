@@ -4,7 +4,13 @@
 ## 1.2.4 (unreleased)
 
 
-- Nothing changed yet.
+- Fix a startup deadlock with FileStorage when the site already exists: the
+  startup hook left its connection open with the changes made by
+  `DarwinStartedEvent` subscribers (an `IObjectModifiedEvent` on the site), so
+  the next startup subscriber's commit joined both connections and waited
+  forever on the storage commit lock. The hook now commits those changes, then
+  aborts and closes its connection.
+  [bsuttor]
 
 
 ## 1.2.3 (2026-10-08)

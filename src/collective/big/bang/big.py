@@ -108,16 +108,27 @@ def bang(event=""):
     is_bigbang_active = os.getenv("ACTIVE_BIGBANG", False)
     if is_bigbang_active == "True":
         app = Zope2.app()
-        site_id = os.getenv("SITE_ID", "Plone")
-
-        create_plone_site(app, site_id)
-        update_admin_password(app)
-
         try:
-            plone = app.unrestrictedTraverse(site_id)
-            notify(DarwinStartedEvent(plone))
-        except KeyError:
-            logger.info("Site not found at path " + site_id)
+            site_id = os.getenv("SITE_ID", "Plone")
+
+            create_plone_site(app, site_id)
+            update_admin_password(app)
+
+            try:
+                plone = app.unrestrictedTraverse(site_id)
+                notify(DarwinStartedEvent(plone))
+            except KeyError:
+                logger.info("Site not found at path " + site_id)
+            # DarwinStartedEvent is an IObjectModifiedEvent: its subscribers
+            # modify the site in this connection. Left uncommitted, the
+            # connection joins the next commit of another startup subscriber,
+            # which then deadlocks on FileStorage's commit lock.
+            transaction.commit()
+        finally:
+            # Startup subscriber: the connection must be closed, a leaked one
+            # keeps its storage read snapshot open.
+            transaction.abort()
+            app._p_jar.close()
 
 
 def create_plone_site(app, site_id):
