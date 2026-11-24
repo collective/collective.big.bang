@@ -524,6 +524,7 @@ class TestExpansionPy(unittest.TestCase):
 
     def setUp(self):
         _STUBS["transaction"].commit.reset_mock()
+        _STUBS["transaction"].abort.reset_mock()
         _STUBS["zope.globalrequest"].setRequest.reset_mock()
         _STUBS["Testing.makerequest"].makerequest.reset_mock()
         _STUBS["Testing.makerequest"].makerequest.side_effect = lambda app: app
@@ -552,6 +553,8 @@ class TestExpansionPy(unittest.TestCase):
                 self.mod.started(MagicMock())
 
         mock_upgrade.assert_called_once()
+        _STUBS["transaction"].abort.assert_called_once()
+        app._p_jar.close.assert_called_once()
 
     def test_started_active_site_absent(self):
         app = MagicMock()
@@ -565,6 +568,27 @@ class TestExpansionPy(unittest.TestCase):
                 self.mod.started(MagicMock())
 
         mock_upgrade.assert_not_called()
+        app._p_jar.close.assert_called_once()
+
+    def test_started_upgrade_error_aborts_and_closes_connection(self):
+        # A failed upgrade step must not leave its changes joined to the
+        # thread's transaction: the next startup subscriber's commit would
+        # include this connection and deadlock on FileStorage's commit lock.
+        app = MagicMock()
+        container = MagicMock()
+        container.objectIds.return_value = ["Plone"]
+        app.unrestrictedTraverse.return_value = container
+        _STUBS["Zope2"].app.return_value = app
+
+        with patch.dict(os.environ, {"ACTIVE_BIGBANG_EXPANSION": "True", "SITE_ID": "Plone"}):
+            with patch.object(
+                self.mod, "upgrade_all_profiles", side_effect=RuntimeError("boom")
+            ):
+                with self.assertRaises(RuntimeError):
+                    self.mod.started(MagicMock())
+
+        _STUBS["transaction"].abort.assert_called_once()
+        app._p_jar.close.assert_called_once()
 
     # ------------------------------------------------------------------
     # upgrade_all_profiles

@@ -12,6 +12,11 @@
   aborts and closes its connection.
   [bsuttor]
 
+- The upgrade startup hook (`ACTIVE_BIGBANG_EXPANSION`) now aborts and closes
+  its connection too, so a failed upgrade step can't leave its changes for the
+  next startup subscriber's commit.
+  [bsuttor]
+
 
 ## 1.2.3 (2026-10-08)
 
