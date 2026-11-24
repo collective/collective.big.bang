@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.4 (unreleased)
+## 1.2.4 (2026-11-24)
 
 
 - Fix a startup deadlock with FileStorage when the site already exists: the
