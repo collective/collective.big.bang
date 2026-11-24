@@ -23,24 +23,34 @@ def started(event):
     is_expansion_active = os.getenv("ACTIVE_BIGBANG_EXPANSION", False)
     if is_expansion_active == "True":
         app = Zope2.app()
-        app = makerequest(app)
-        app.REQUEST["PARENTS"] = [app]
-        setRequest(app.REQUEST)
-        container = app.unrestrictedTraverse("/")
+        try:
+            app = makerequest(app)
+            app.REQUEST["PARENTS"] = [app]
+            setRequest(app.REQUEST)
+            container = app.unrestrictedTraverse("/")
 
-        site_id = os.getenv("SITE_ID", "Plone")
-        oids = container.objectIds()
-        if site_id in oids and "/" not in site_id:
-            site = getattr(app, site_id, None)
-            previous_site = getSite()
-            if previous_site is not site:
-                setSite(site)
-            portal_setup = site.portal_setup
-            try:
-                upgrade_all_profiles(portal_setup)
-            finally:
+            site_id = os.getenv("SITE_ID", "Plone")
+            oids = container.objectIds()
+            if site_id in oids and "/" not in site_id:
+                site = getattr(app, site_id, None)
+                previous_site = getSite()
                 if previous_site is not site:
-                    setSite(previous_site)
+                    setSite(site)
+                portal_setup = site.portal_setup
+                try:
+                    upgrade_all_profiles(portal_setup)
+                finally:
+                    if previous_site is not site:
+                        setSite(previous_site)
+        finally:
+            # Startup subscriber: do_upgrades() commits each finished upgrade,
+            # so only a failed step's changes are left. Abort them: left in
+            # this connection, they would join the next startup subscriber's
+            # commit, which then deadlocks on FileStorage's commit lock. Then
+            # close the connection, a leaked one keeps its storage read
+            # snapshot open.
+            transaction.abort()
+            app._p_jar.close()
 
 
 class ExpansionView(BrowserView):

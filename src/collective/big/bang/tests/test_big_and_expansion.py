@@ -134,6 +134,7 @@ def _build_stubs():  # noqa: C901
     # ---- transaction ----
     s["transaction"] = _mod("transaction")
     s["transaction"].commit = MagicMock()
+    s["transaction"].abort = MagicMock()
 
     # ---- Zope2 ----
     s["Zope2"] = _mod("Zope2")
@@ -207,6 +208,7 @@ class TestBigPy(unittest.TestCase):
 
     def setUp(self):
         _STUBS["transaction"].commit.reset_mock()
+        _STUBS["transaction"].abort.reset_mock()
         _STUBS["zope.component.hooks"].setSite.reset_mock()
         _STUBS["zope.event"].notify.reset_mock()
         _STUBS["zope.globalrequest"].setRequest.reset_mock()
@@ -406,6 +408,45 @@ class TestBigPy(unittest.TestCase):
                     # Must not raise
                     self.mod.bang()
 
+        app._p_jar.close.assert_called_once()
+
+    def test_bang_commits_darwin_event_changes_then_closes_connection(self):
+        # DarwinStartedEvent is an IObjectModifiedEvent: its subscribers modify
+        # the site in bang's connection. Left uncommitted, that connection
+        # joins the next commit of another startup subscriber, which then
+        # deadlocks on FileStorage's commit lock.
+        app = MagicMock()
+        _STUBS["Zope2"].app.return_value = app
+        calls = MagicMock()
+        calls.attach_mock(_STUBS["zope.event"].notify, "notify")
+        calls.attach_mock(_STUBS["transaction"].commit, "commit")
+        calls.attach_mock(_STUBS["transaction"].abort, "abort")
+        calls.attach_mock(app._p_jar.close, "close")
+
+        with patch.dict(os.environ, {"ACTIVE_BIGBANG": "True", "SITE_ID": "Plone"}):
+            with patch.object(self.mod, "create_plone_site"):
+                with patch.object(self.mod, "update_admin_password"):
+                    self.mod.bang()
+
+        self.assertEqual(
+            [c[0] for c in calls.mock_calls], ["notify", "commit", "abort", "close"]
+        )
+
+    def test_bang_closes_connection_on_error(self):
+        app = MagicMock()
+        _STUBS["Zope2"].app.return_value = app
+
+        with patch.dict(os.environ, {"ACTIVE_BIGBANG": "True", "SITE_ID": "Plone"}):
+            with patch.object(
+                self.mod, "create_plone_site", side_effect=RuntimeError("boom")
+            ):
+                with self.assertRaises(RuntimeError):
+                    self.mod.bang()
+
+        _STUBS["transaction"].commit.assert_not_called()
+        _STUBS["transaction"].abort.assert_called_once()
+        app._p_jar.close.assert_called_once()
+
     # ------------------------------------------------------------------
     # create_plone_site
     # ------------------------------------------------------------------
@@ -483,6 +524,7 @@ class TestExpansionPy(unittest.TestCase):
 
     def setUp(self):
         _STUBS["transaction"].commit.reset_mock()
+        _STUBS["transaction"].abort.reset_mock()
         _STUBS["zope.globalrequest"].setRequest.reset_mock()
         _STUBS["Testing.makerequest"].makerequest.reset_mock()
         _STUBS["Testing.makerequest"].makerequest.side_effect = lambda app: app
@@ -511,6 +553,8 @@ class TestExpansionPy(unittest.TestCase):
                 self.mod.started(MagicMock())
 
         mock_upgrade.assert_called_once()
+        _STUBS["transaction"].abort.assert_called_once()
+        app._p_jar.close.assert_called_once()
 
     def test_started_active_site_absent(self):
         app = MagicMock()
@@ -524,6 +568,27 @@ class TestExpansionPy(unittest.TestCase):
                 self.mod.started(MagicMock())
 
         mock_upgrade.assert_not_called()
+        app._p_jar.close.assert_called_once()
+
+    def test_started_upgrade_error_aborts_and_closes_connection(self):
+        # A failed upgrade step must not leave its changes joined to the
+        # thread's transaction: the next startup subscriber's commit would
+        # include this connection and deadlock on FileStorage's commit lock.
+        app = MagicMock()
+        container = MagicMock()
+        container.objectIds.return_value = ["Plone"]
+        app.unrestrictedTraverse.return_value = container
+        _STUBS["Zope2"].app.return_value = app
+
+        with patch.dict(os.environ, {"ACTIVE_BIGBANG_EXPANSION": "True", "SITE_ID": "Plone"}):
+            with patch.object(
+                self.mod, "upgrade_all_profiles", side_effect=RuntimeError("boom")
+            ):
+                with self.assertRaises(RuntimeError):
+                    self.mod.started(MagicMock())
+
+        _STUBS["transaction"].abort.assert_called_once()
+        app._p_jar.close.assert_called_once()
 
     # ------------------------------------------------------------------
     # upgrade_all_profiles
